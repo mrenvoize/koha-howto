@@ -1,0 +1,306 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha staff client</title>
+[% INCLUDE 'doc-head-close.inc' %]
+
+<style type="text/css">
+    i.fa-check, .correct { color: green; }
+    i.fa-remove, .wrong { color: red; }
+</style>
+
+
+<script type="text/javascript">
+//<![CDATA[
+    var qas = [
+        {
+            'question': _("What is the name of the bug tracker we use?"),
+            'answer': 2,
+            'type': 'option',
+            'options': ['Redmine', 'Track', 'Bugzilla', 'Mantis' ],
+            'hint': _("You can find it at https://bugs.koha-community.org"),
+        },
+        {
+            'question': _("What means signing off a patch?"),
+            'answer': 2,
+            'type': 'option',
+            'options': [_('Nothing'), _('It does not work'), _('It has been tested and it works as advertised') ],
+            'hint': _(""),
+        },
+        {
+            'question': _("What means QA a patch?"),
+            'answer': 2,
+            'type': 'option',
+            'options': [_('Nothing'), _('Test a patch'), _('Code review') ],
+            'hint': _("The QA step is a technical review of the patches"),
+        },
+        {
+            'question': _("Who can open a new bug report?"),
+            'answer': 0,
+            'type': 'option',
+            'options': ['everybody', 'QA team', 'Release manager' ],
+            'hint': _("They just need to create an account!"),
+        },
+        {
+            'question': _("Who can submit patches?"),
+            'answer': 0,
+            'type': 'option',
+            'options': ['everybody', 'QA team', 'Release manager' ],
+            'hint': _(""),
+        },
+        {
+            'question': _("Who can test patches?"),
+            'answer': 0,
+            'type': 'option',
+            'options': ['everybody', 'QA team', 'Release manager' ],
+            'hint': _("With sandboxes it is very easy to test patches, see https://wiki.koha-community.org/wiki/Sandboxes"),
+        },
+        {
+            'question': _("Who can QA patches?"),
+            'answer': 2,
+            'type': 'option',
+            'options': ['everybody', 'testers', 'QA team', 'Release manager' ],
+            'hint': _("See https://wiki.koha-community.org/wiki/Guidelines_for_Patch_Acceptance/Rejection"),
+        },
+        {
+            'question': _("Who can fail QA patches?"),
+            'answer': 0,
+            'type': 'option',
+            'options': ['everybody', 'testers', 'QA team', 'Release manager' ],
+            'hint': _("If you test a patch and it does not work you are allowed to change the status to 'Failed QA'"),
+        },
+        {
+            'question': _("Who can push a patch to the master branch?"),
+            'answer': 3,
+            'type': 'option',
+            'options': ['everybody', 'testers', 'QA team', 'Release manager' ],
+            'hint': _("See https://wiki.koha-community.org/wiki/How_the_RM_push"),
+        },
+        {
+            'question': _("What is the license of Koha??"),
+            'answer': 2,
+            'type': 'option',
+            'options': ['Public domain', 'GPLv2', 'GPLv3', 'Beerware', 'BSD', 'LGPL' ],
+            'hint': _("See the '1.2 License' section of coding guidelines"),
+        },
+        {
+            'question': _("What is the indentation rule?"),
+            'answer': 5,
+            'type': 'option',
+            'options': ['No indentation', 'As you want', '1 tab', '4 tabs', '2 spaces', '4 spaces' ],
+            'hint': _("See the 'PERL6: Indentation' section of the coding guidelines"),
+        },
+        {
+            'question': _("How must start a commit message for bug 12342?"),
+            'answer': 2,
+            'type': 'option',
+            'options': ['12342', 'bug 12342', 'Bug 12342', 'BUG 12342', ' B U G 42424' ],
+            'hint': _("See https://wiki.koha-community.org/wiki/Commit_messages"),
+        },
+        {
+            'question': _("When signed-off how start the last line of the commit message?"),
+            'answer': 0,
+            'type': 'option',
+            'options': ['Signed-off-by: ', 'Signed off by:', 'Tested by me' ],
+            'hint': _("See https://wiki.koha-community.org/wiki/Commit_messages"),
+        },
+        {
+            'question': _("After I opened a new bug report I have to change the status"),
+            'answer': 1,
+            'type': 'option',
+            'options': ['True', 'False' ],
+            'hint': _("You change the status to 'Assigned' only if you plan to submit a patch"),
+        },
+        {
+            'question': _("When I attach a patch to a bug and it is ready to be tested I change the status to "),
+            'answer': 1,
+            'type': 'option',
+            'options': ['Assigned', 'Needs Signoff', 'Signed Off', 'Failed QA', 'Passed QA', 'Pushed to Master', 'Pushed to Stable' ],
+            'hint': _("You change the status to 'Assigned' only if you plan to submit a patch"),
+        },
+        {
+            'question': _("When I tested a patch and I confirm it works as expected, I change the status to "),
+            'answer': 2,
+            'type': 'option',
+            'options': ['Assigned', 'Needs Signoff', 'Signed Off', 'Failed QA', 'Passed QA', 'Pushed to Master', 'Pushed to Stable' ],
+            'hint': _(""),
+        },
+        {
+            'question': _("If a member of the QA team found something wrong in my patch, they will switch the status to"),
+            'answer': 3,
+            'type': 'option',
+            'options': ['Assigned', 'Needs Signoff', 'Signed Off', 'Failed QA', 'Passed QA', 'Pushed to Master', 'Pushed to Stable' ],
+            'hint': _(""),
+        },
+        {
+            'question': _("When I tested a patch and it does not work as expected, I change the status to "),
+            'answer': 3,
+            'type': 'option',
+            'options': ['Assigned', 'Needs Signoff', 'Signed Off', 'Failed QA', 'Passed QA', 'Pushed to Master', 'Pushed to Stable' ],
+            'hint': _(""),
+        },
+        {
+            'question': _("I can update my production installation and get a patch when marked as "),
+            'answer': 6,
+            'type': 'option',
+            'options': ['Assigned', 'Needs Signoff', 'Signed Off', 'Failed QA', 'Passed QA', 'Pushed to Master', 'Pushed to Stable' ],
+            'hint': _("Of course you can backport any patches to your production servers, at your own risks!"),
+        },
+        {
+            'question': _("If someone uses the 'In discussion' status, I abandonned it. It is lost in limbo for sure!"),
+            'answer': 1,
+            'type': 'option',
+            'options': ['True', 'False' ],
+            'hint': _("No! It just mean that we need to assign it the correct status. We open a discussion and try to understand what is best for everybody."),
+        },
+        {
+            'question': _("Just before the Release Manager will push a patch, the status should be "),
+            'answer': 4,
+            'type': 'option',
+            'options': ['Assigned', 'Needs Signoff', 'Signed Off', 'Failed QA', 'Passed QA', 'Pushed to Master', 'Pushed to Stable' ],
+            'hint': _(""),
+        },
+        {
+            'question': _("And just after?"),
+            'answer': 5,
+            'type': 'option',
+            'options': ['Assigned', 'Needs Signoff', 'Signed Off', 'Failed QA', 'Passed QA', 'Pushed to Master', 'Pushed to Stable' ],
+            'hint': _(""),
+        },
+    ];
+
+    var qa_step = 0;
+    function next () {
+        current_qa = qas[qa_step];
+        var done = $("#current_qa").clone();
+        var a = get_user_answer();
+        if ( a == '' ) { return; }
+        if ( validate( current_qa, a ) ) {
+            $(done).find(".status").html('<i class="fa fa-fw fa-check"></i>');
+            $(done).find(".answer").html('');
+        } else {
+            $(done).find(".status").html('<i class="fa fa-fw fa-remove"></i>');
+            var wrong_answer;
+            if ( current_qa['type'] == 'option' ) {
+                wrong_answer = $('#current_qa > .answer > select > option:selected').text();
+            } else if ( q['type'] == 'text' ) {
+            }
+            $(done).find(".answer").html('<span class="wrong">'+wrong_answer+'</span>');
+        }
+        $(done).find(".the_answer").html('<span class="correct">'+current_qa['options'][current_qa['answer']]+'</span>');
+        $(done).attr('id', 'qa_'+qa_step);
+        $(done).find(".hint").html(current_qa['hint']);
+        $("#previous_qas").append(done);
+
+        if ( $(qas).size() > qa_step + 1 ) {
+            console.log("next");
+            qa_step++;
+            display_qa(qas[qa_step]);
+            $("#current_qa > .answer > :first").focus();
+        } else {
+            $("#current_qa").remove();
+            console.log("stop");
+        }
+    }
+    function get_user_answer() {
+        var a = $("#current_qa > .answer");
+        if ( $(a).find('select').size() > 0 ) { // option
+            a = $(a).find('select > option:selected').val();
+        } else { // text
+        }
+        return a;
+    }
+    function validate( q, a ) {
+        if ( q['type'] == 'option' ) {
+            a = $('#current_qa > .answer > select > option:selected').val();
+            if ( a.toString() === q['answer'].toString() ) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if ( q['type'] == 'text' ) {
+        }
+        return false;
+    }
+    function display_qa( q ) {
+        var a;
+        if ( q['type'] == 'option' ) {
+            a = $('<select name="answer"></select>');
+            a.append('<option value="">'+_('Choose')+'</option>');
+            $(q['options']).each(function(i, e) {
+                a.append('<option value="'+i+'">'+e+'</option>');
+            });
+        } else if ( q['type'] == 'text' ) {
+            a = $('<input type="text" value="" name="answer" />');
+        }
+        $("#current_qa > .number").html(( qa_step + 1 ) + '. ');
+        $("#current_qa > .question").text(q['question']);
+        $("#current_qa > .answer").html($(a));
+        $("#current_qa > .the_answer").html('');
+        $("#current_qa > .status").html('');
+    }
+    $(document).ready(function(){
+        [% IF step == 2 %]
+            display_qa( qas[0] );
+            $("#next").on('click', function(e){e.preventDefault(); next();});
+        [% END %]
+    });
+//]]>
+</script>
+
+</head>
+<body id="howto-main" class="howto">
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'home-search.inc' %]
+
+<div id="breadcrumbs" >Home > How to hack Koha?</div>
+
+
+<div id="doc3" class="yui-t3">
+   <div id="bd">
+    <div id="yui-main">
+    [% FOREACH m IN messages %]
+        <div class="dialog [% m.type %]">
+        [% SWITCH m.code %]
+            [% CASE 'using_db_user' %]
+                You are using the database user. You should never use this user. Use a superlibrarian user instead.
+            [% CASE %][% m.code %]
+        [% END %]
+        </div>
+    [% END %]
+
+    <div class="yui-g">
+        [% SWITCH step %]
+        [% CASE '1' %]
+            <h1>Welcome!</h1>
+            Yeah, you did it!
+            You have a fully working development environment, you can now learn how to hack Koha!
+            This How-to will guide you to write your first patch, following the coding guidelines of the Koha community.
+            To start you will need to read some useful resources:
+            <ol>
+                <li><a href="https://wiki.koha-community.org/wiki/Development_workflow">Our development workflow</a></li>
+                <li><a href="https://wiki.koha-community.org/wiki/Coding_Guidelines">Our coding guidelines</a></li>
+                <li><a href="https://wiki.koha-community.org/wiki/Submitting_A_Patch">Submitting a patch</a></li>
+            </ol>
+            You do not need to read everything, but at least parse them quickly to know where you can find useful information.
+            <form method="post" action="/cgi-bin/koha/how-to.pl">
+                <input type="hidden" name="step" value="[% next_step %]" />
+                <input type="hidden" name="checkdb" value="1" />
+                <p> <input value="Continue to the next step" class="btn btn-primary" type="submit" /> </p>
+            </form>
+        [% CASE '2' %]
+            <h1>Confirm knowledge basis</h1>
+            Hum, we all know it is boring to read documentations but we need make sure you read it anyway :)
+            <div id="QandA">
+                <div id="previous_qas"></div>
+                <div id="current_qa">
+                    <span class="number">1. </span>
+                    <span class="question"></span>
+                    <span class="status"></span>
+                    <span class="answer"></span>
+                    <span class="the_answer"></span>
+                    <span class="hint"></span>
+                </div>
+                <a href="#" id="next" class="btn btn-default btn-sm"> Next</a>
+            </div>
+        [% END %]
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]
