@@ -937,49 +937,47 @@
             <h3>Please try again</h3>
         [% END %]
         [% FOREACH m IN messages %]
-            [% IF messages.size > 1 %]<li>[% END %]
+            [% IF messages.size > 1 %]<li>[% ELSE %]<p>[% END %]
             [% SWITCH m %]
                 [% CASE 'using_db_user' %]
-                    <p>You are using the database user. You should never use this user. Use a superlibrarian user instead.</p>
+                    You are using the database user. You should never use this user. Use a superlibrarian user instead.
                 [% CASE 'no_koha_git_dir' %]
-                    <p>This tutorial is supposed to be used inside Koha.</p>
+                    This tutorial is supposed to be used inside Koha.
                 [% CASE 'commit_does_not_start_with_bug_number' %]
-                    <p>The commit message must start with 'Bug 18584: '</p>
+                    The commit message must start with 'Bug 18584: '
                 [% CASE 'commit_does_not_contain_spaces' %]
-                    <p>The first line of the commit message must specify that you are removing trailing spaces</p>
+                    The first line of the commit message must specify that you are removing trailing spaces
                 [% CASE 'first_line_too_long' %]
-                    <p>The first line of the commit message is too long (more than 80 characters)</p>
+                    The first line of the commit message is too long (more than 80 characters)
                 [% CASE 'too_many_files_modified' %]
-                    <p>You should have one and only one file modified</p>
+                    You should have one and only one file modified
                 [% CASE 'too_many_lines_modified' %]
-                    <p>You should have one and only one line modified</p>
+                    You should have one and only one line modified
                 [% CASE 'commit_message_does_not_contain_filename' %]
-                    <p>The first line of the commit message must specify the filename you touch.<br/>
-                        <strong>Note:</strong> Most of the time you do not need to specify it. In our case it is different: several commits will be needed to fix all the trailing spaces. To differentiate the commits it will be preferable to highlight the filename in the commit message.</p>
+                    The first line of the commit message must specify the filename you touch.<br/>
+                    <strong>Note:</strong> Most of the time you do not need to specify it. In our case it is different: several commits will be needed to fix all the trailing spaces. To differentiate the commits it will be preferable to highlight the filename in the commit message.
                 [% CASE 'commit_message_does_not_contain_test_plan' %]
-                    <p>The commit message must contain a test plan.<br/>
-                        <strong>Note:</strong> In this situation the test plan will be very short. A simple line "Open the file and confirm that the trailing spaces are gone" would be enough.<br/>
-                        For a more complex patch we will expect a step-by-step plan to confirm the issue is fixed.</p>
+                    The commit message must contain a test plan.<br/>
+                    <strong>Note:</strong> In this situation the test plan will be very short. A simple line "Open the file and confirm that the trailing spaces are gone" would be enough.<br/>
+                    For a more complex patch we will expect a step-by-step plan to confirm the issue is fixed.
                 [% CASE 'branch_without_bugnumber' %]
-                    <p>
-                        You must work on a branch that contain the number of the bug, something like <code>bug_18584</code>
-                    </p>
+                    You must work on a branch that contain the number of the bug, something like <code>bug_18584</code>
                 [% CASE 'too_many_commits_diff_with_master' %]
-                    <p>There are too many commits of difference between <code>origin/master</code> and your local branch.<br/> Are you sure your local branch is up-to-date with <code>origin/master</code>?</p>
+                    There are too many commits of difference between <code>origin/master</code> and your local branch.<br/> Are you sure your local branch is up-to-date with <code>origin/master</code>?
                 [% CASE 'not_executed' %]
-                    <p>You did not execute the QA script, or the number of commits you tested were wrong.<br/>
-                        You need to execute the following command: <code>qa -c 1 -v 2</code>.</p>
+                    You did not execute the QA script, or the number of commits you tested were wrong.<br/>
+                    You need to execute the following command: <code>qa -c 1 -v 2</code>.
                 [% CASE 'report_not_nso' %]
-                    <p>The bug report is not in the 'Needs Signoff' status. You should update it if your patch is attached.</p>
+                    The bug report is not in the 'Needs Signoff' status. You should update it if your patch is attached.
                 [% CASE 'patch_not_applied' %]
-                    <p>The patch is not applied correctly!</p>
+                    The patch is not applied correctly!
                 [% CASE 'patch_not_signed_off' %]
-                    <p>The patch is not signed off!</p>
+                    The patch is not signed off!
                 [% CASE 'report_not_so' %]
-                    <p>The bug report is not in the 'Signed Off' status. You should update it if your signed-off patch is attached.</p>
+                    The bug report is not in the 'Signed Off' status. You should update it if your signed-off patch is attached.
                 [% CASE %][% m %]
             [% END %]
-            [% IF messages.size > 1 %]</li>[% END %]
+            [% IF messages.size > 1 %]</li>[% ELSE %]</p>[% END %]
         [% END %]
         [% IF messages.size > 1 %]</ol>[% END %]
 
