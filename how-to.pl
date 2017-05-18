@@ -166,7 +166,7 @@ sub get_issues_with_last_commit {
     $_ =~ s|^\s*|| for @lines;
     my $first_line = $lines[3];
     my @messages;
-    unless ( $first_line =~ m|^Bug $bug_number: | ) {
+    unless ( $first_line =~ m#^Bug $bug_number(:|\s-)\s# ) {
         push @messages, 'commit_does_not_start_with_bug_number';
     }
     unless ( $first_line =~ m|space| ) {
