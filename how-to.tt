@@ -366,7 +366,7 @@
    <div id="bd">
     <div id="yui-main">
 
-    [% INCLUDE display_messages messages=messages %]
+    [% INCLUDE display_messages messages=messages, not_a_step=1%]
     <div class="yui-b">
         [% SWITCH step %]
         [% CASE '0' %]
@@ -692,15 +692,17 @@
         [% END %]
         [% IF messages.size > 1 %]</ol>[% END %]
         <br/>
-        [% IF substep %]
-            <a href="/cgi-bin/koha/how-to.pl?step=[% step %]&substep=[% substep %]&verify=1" id="next_step" class="btn btn-default btn-sm"> Retry</a>
-        [% ELSE %]
-            <a href="/cgi-bin/koha/how-to.pl?step=[% step %]&verify=1" id="next_step" class="btn btn-default btn-sm"> Retry</a>
-        [% END %]
-        [% IF next_substep %]
-            <a href="/cgi-bin/koha/how-to.pl?step=[% next_step %]&substep=[% next_substep %]" id="next_step" class="btn btn-default btn-sm"> Skip this step!</a>
-        [% ELSE %]
-            <a href="/cgi-bin/koha/how-to.pl?step=[% next_step %]" id="next_step" class="btn btn-default btn-sm"> Skip this step!</a>
+        [% UNLESS not_a_step %]
+            [% IF substep %]
+                <a href="/cgi-bin/koha/how-to.pl?step=[% step %]&substep=[% substep %]&verify=1" id="next_step" class="btn btn-default btn-sm"> Retry</a>
+            [% ELSE %]
+                <a href="/cgi-bin/koha/how-to.pl?step=[% step %]&verify=1" id="next_step" class="btn btn-default btn-sm"> Retry</a>
+            [% END %]
+            [% IF next_substep %]
+                <a href="/cgi-bin/koha/how-to.pl?step=[% next_step %]&substep=[% next_substep %]" id="next_step" class="btn btn-default btn-sm"> Skip this step!</a>
+            [% ELSE %]
+                <a href="/cgi-bin/koha/how-to.pl?step=[% next_step %]" id="next_step" class="btn btn-default btn-sm"> Skip this step!</a>
+            [% END %]
         [% END %]
     </div>
 [% END %]

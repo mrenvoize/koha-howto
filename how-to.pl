@@ -95,7 +95,7 @@ else {
 
 my $patron = Koha::Patrons->find($loggedinuser);
 unless ($patron) {
-    push @messages, { type => 'error', code => 'using_db_user' };
+    push @messages, 'using_db_user';
 }
 
 $template->param(
